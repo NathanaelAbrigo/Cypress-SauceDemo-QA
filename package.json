@@ -1,0 +1,15 @@
+{
+  "name": "saucedemo-qa",
+  "version": "1.0.0",
+  "description": "The project will involve creating a test suite for the SauceDemo website. The students will write tests to validate the functionality of the login process, product filtering, and adding/removing items from the cart.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^13.13.0"
+  }
+}
