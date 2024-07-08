@@ -3,44 +3,6 @@ describe('Login Test', () => {
   // Array to store inputted credentials and error messages
   const loginAttempts = [];
 
-  // VALID LOGIN CREDENTIALS
-  // Create a new Map
-  const userCredentials = new Map();
-
-  // Add valid username and password pairs
-  userCredentials.set('standard_user', 'secret_sauce');
-  // userCredentials.set('locked_out_user', 'secret_sauce');
-  userCredentials.set('problem_user', 'secret_sauce');
-  // userCredentials.set('performance_glitch_user', 'secret_sauce');
-  userCredentials.set('error_user', 'secret_sauce');
-  userCredentials.set('visual_user', 'secret_sauce');
-
-  // Loop through each user in the map and perform login tests
-  userCredentials.forEach((password, username) => {
-    it(`should successfully login as ${username}`, () => {
-      // Visit the login page
-      cy.visit('/');
-
-      // Enter username and password
-      cy.get('#user-name').type(username);
-      cy.get('#password').type(password);
-
-      // Click the login button
-      cy.get('#login-button').click();
-
-      // Store inputted credentials in the array
-      loginAttempts.push({
-        username,
-        password,
-        errorMessage: '', // Leave error message blank for successful attempt
-        success: true // Mark as successful attempt
-      });
-
-      // Assertions to verify successful login
-      cy.url().should('include', '/inventory.html');
-    });
-  });
-
   // INVALID LOGIN CREDENTIALS
 
   // Create a new Map
@@ -54,15 +16,8 @@ describe('Login Test', () => {
   // Loop through each user in the map and perform login tests
   invalidCredentials.forEach((password, username) => {
     it(`should fail login as ${username}`, () => {
-      // Visit the login page
-      cy.visit('/');
-
-      // Enter username and password
-      cy.get('#user-name').type(username);
-      cy.get('#password').type(password);
-
-      // Click the login button
-      cy.get('#login-button').click();
+      
+      cy.login(username, password);
 
       // Capture the error message
       cy.get('.error-message-container').invoke('text').then(errorMessage => {
@@ -82,6 +37,38 @@ describe('Login Test', () => {
       });
     });
   });
+
+  // VALID LOGIN CREDENTIALS
+  // Create a new Map
+  const userCredentials = new Map();
+
+  // Add valid username and password pairs
+  userCredentials.set('standard_user', 'secret_sauce');
+  // userCredentials.set('locked_out_user', 'secret_sauce');
+  userCredentials.set('problem_user', 'secret_sauce');
+  // userCredentials.set('performance_glitch_user', 'secret_sauce');
+  userCredentials.set('error_user', 'secret_sauce');
+  userCredentials.set('visual_user', 'secret_sauce');
+
+  // Loop through each user in the map and perform login tests
+  userCredentials.forEach((password, username) => {
+    it(`should successfully login as ${username}`, () => {
+      
+      cy.login(username, password);
+
+      // Store inputted credentials in the array
+      loginAttempts.push({
+        username,
+        password,
+        errorMessage: '', // Leave error message blank for successful attempt
+        success: true // Mark as successful attempt
+      });
+
+      // Assertions to verify successful login
+      cy.url().should('include', '/inventory.html');
+    });
+  });
+
   after(() => {
     // Print to Cypress console
     cy.log('Login attempts:');
