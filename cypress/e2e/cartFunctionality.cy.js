@@ -34,8 +34,6 @@ describe('cartFunctions', () => {
       });
 
       cy.get('[data-test="back-to-products"]').click();
-
-      //ensure you are back in inventory page
       cy.url().should('include', '/inventory.html');
     };
     console.log('add cart')

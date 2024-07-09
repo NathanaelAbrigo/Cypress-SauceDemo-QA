@@ -32,13 +32,12 @@ const itemDataset = [
 ];
 
 describe('Product Page', () => {
-  // Before running tests in this file, perform login
   beforeEach(() => {
     // Assuming 'standard_user' and 'secret_sauce' are valid credentials
     cy.login('standard_user', 'secret_sauce');
   });
 
-  // Now write your product page tests
+  // product page tests
   it('should display products\' information correctly', () => {
     // Ensure you are on the product page after login
     cy.url().should('include', '/inventory.html');
@@ -69,14 +68,11 @@ describe('Product Page', () => {
       });
 
       cy.get('[data-test="back-to-products"]').click();
-
-      //ensure you are back in inventory page
       cy.url().should('include', '/inventory.html');
       i++
     }
   });
 
-  // });
   it('should display in Name (A-Z)', () => {
     
     // Define the selector for the dropdown

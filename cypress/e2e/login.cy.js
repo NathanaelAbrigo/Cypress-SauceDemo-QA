@@ -4,7 +4,6 @@ describe('Login Test', () => {
   const loginAttempts = [];
 
   // INVALID LOGIN CREDENTIALS
-
   // Create a new Map
   const invalidCredentials = new Map();
 

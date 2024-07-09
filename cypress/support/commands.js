@@ -33,5 +33,6 @@ Cypress.Commands.add('login', (username, password) => {
 
    // Click the login button
    cy.get('#login-button').click();
+   
   });
   
