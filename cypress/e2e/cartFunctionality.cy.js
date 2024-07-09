@@ -46,7 +46,7 @@ describe('cartFunctions', () => {
     for (let i = 0; i < totalProducts; i++) {
       for (let j = 0; removeProductIDinCart.length > j; j++) {
         // console.log('i = ' + i + ' j=' + j)
-        if (i === j) {
+        if (i === removeProductIDinCart[j]) {
           let selectProduct = `[data-test="item-${i}-title-link"] > [data-test="inventory-item-name"]`;
 
           // Click on the product
