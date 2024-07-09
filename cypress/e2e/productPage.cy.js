@@ -28,23 +28,22 @@ const itemDataset = [
 
 describe('Product Page', () => {
   // Before running tests in this file, perform login
-  before(() => {
+  beforeEach(() => {
     // Assuming 'standard_user' and 'secret_sauce' are valid credentials
     cy.login('standard_user', 'secret_sauce');
   });
 
   // Now write your product page tests
-  it('should display products correctly', () => {
+  it('should display products\' information correctly', () => {
     // Ensure you are on the product page after login
     cy.url().should('include', '/inventory.html');
 
     let i = 0;
-    while(itemDataset.length > i)
-    {
-      let selectProduct = "[data-test=\"item-"+i+"-title-link\"] > [data-test=\"inventory-item-name\"]";
+    while (itemDataset.length > i) {
+      let selectProduct = "[data-test=\"item-" + i + "-title-link\"] > [data-test=\"inventory-item-name\"]";
 
       cy.get(selectProduct).click();
-      cy.url().should('include', '.html?id='+i);
+      cy.url().should('include', '.html?id=' + i);
 
       let productName = cy.get('[data-test="inventory-item-name"]').invoke('text');
       let productDescription = cy.get('[data-test="inventory-item-desc"]').invoke('text');
@@ -70,7 +69,127 @@ describe('Product Page', () => {
       cy.url().should('include', '/inventory.html');
       i++
     }
+  });
 
+  // });
+  it('should display in Name (A-Z)', () => {
+    
+    // Define the selector for the dropdown
+    const dropdownSelector = 'select[data-test="product-sort-container"]';
+    cy.get(dropdownSelector).select('az');
+    cy.get(dropdownSelector).should('have.value', 'az');
+
+    // Define the selector for the product names
+    const selectProduct = '[data-test="inventory-item-name"]';
+
+    // Create an array to store the product names
+    const productNames = [];
+
+    // Fetch all product names
+    cy.get(selectProduct).each(($el) => {
+      cy.wrap($el).invoke('text').then((text) => {
+        productNames.push(text.trim());
+      });
+    }).then(() => {
+      // Create a copy of productNames array and sort it alphabetically
+      const sortedProductNames = [...productNames].sort();
+
+      // Compare the sorted names with the names on the page
+      for (let i = 0; i < productNames.length; i++) {
+        expect(productNames[i]).to.eq(sortedProductNames[i]);
+      }
+    });
+  });
+
+  it('should display in Name (Z-A)', () => {
+
+    // Define the selector for the dropdown
+    const dropdownSelector = 'select[data-test="product-sort-container"]';
+    cy.get(dropdownSelector).select('za');
+    cy.get(dropdownSelector).should('have.value', 'za');
+
+    // Define the selector for the product names
+    const selectProduct = '[data-test="inventory-item-name"]';
+
+    // Create an array to store the product names
+    const productNames = [];
+
+    // Fetch all product names
+    cy.get(selectProduct).each(($el) => {
+      cy.wrap($el).invoke('text').then((text) => {
+        productNames.push(text.trim());
+      });
+    }).then(() => {
+      // Create a copy of productNames array and sort it in reverse alphabetical order
+      const sortedProductNames = [...productNames].sort().reverse();
+
+      // Compare the sorted names with the names on the page
+      for (let i = 0; i < productNames.length; i++) {
+        expect(productNames[i]).to.eq(sortedProductNames[i]);
+      }
+    });
+  });
+
+  it('should display in Price (High-Low)', () => {
+    
+    // Define the selector for the dropdown
+    const dropdownSelector = 'select[data-test="product-sort-container"]';
+    cy.get(dropdownSelector).select('hilo');
+    cy.get(dropdownSelector).should('have.value', 'hilo');
+
+    // Define the selector for the product prices
+    const selectProductPrice = '[data-test="inventory-item-price"]';
+
+    // Create an array to store the product prices
+    const productPrices = [];
+
+    // Fetch all product prices
+    cy.get(selectProductPrice).each(($el) => {
+      cy.wrap($el).invoke('text').then((text) => {
+        // Remove the dollar sign and convert to number
+        const price = parseFloat(text.replace('$', '').trim());
+        productPrices.push(price);
+      });
+    }).then(() => {
+      // Create a copy of productPrices array and sort it in descending order
+      const sortedProductPrices = [...productPrices].sort((a, b) => b - a);
+
+      // Compare the sorted prices with the prices on the page
+      for (let i = 0; i < productPrices.length; i++) {
+        expect(productPrices[i]).to.eq(sortedProductPrices[i]);
+      }
+    });
+  });
+
+  it('should display in Price (Low-High)', () => {
+    // Define the selector for the dropdown
+    const dropdownSelector = 'select[data-test="product-sort-container"]';
+    cy.get(dropdownSelector).select('lohi');
+    cy.get(dropdownSelector).should('have.value', 'lohi');
   
-});
+    // Define the selector for the product prices
+    const selectProductPrice = '[data-test="inventory-item-price"]';
+  
+    // Create an array to store the product prices
+    const productPrices = [];
+  
+    // Fetch all product prices
+    cy.get(selectProductPrice).each(($el) => {
+      cy.wrap($el).invoke('text').then((text) => {
+        // Remove the dollar sign and convert to number
+        const price = parseFloat(text.replace('$', '').trim());
+        productPrices.push(price);
+      });
+    }).then(() => {
+      // Create a copy of productPrices array and sort it in ascending order
+      const sortedProductPrices = [...productPrices].sort((a, b) => a - b);
+  
+      // Compare the sorted prices with the prices on the page
+      for (let i = 0; i < productPrices.length; i++) {
+        expect(productPrices[i]).to.eq(sortedProductPrices[i]);
+      }
+    });
+  });
+  
+
 });
