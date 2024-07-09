@@ -11,7 +11,7 @@ module.exports = defineConfig({
     experimentalStudio: true,
     defaultCommandTimeout: 10000,
 
-    // // to disable autorun
-    // "watchForFileChanges": false,
+    // to disable autorun
+    "watchForFileChanges": false,
   },
 });
